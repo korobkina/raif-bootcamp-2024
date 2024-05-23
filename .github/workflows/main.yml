@@ -68,7 +68,7 @@ jobs:
         SERVER_HOST: ${{ secrets.SERVER_HOST }}
         SERVER_USER: ${{ secrets.SERVER_USER }}
         TB: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        OA: OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+        OA: ${{ secrets.OPENAI_API_KEY }}
         WORK_DIR: /root/deployments
       run: |
         ssh-keyscan -t rsa $SERVER_HOST >> ~/.ssh/known_hosts
