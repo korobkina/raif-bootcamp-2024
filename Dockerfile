@@ -1,4 +1,4 @@
-FROM python:3.10 as compile-image
+FROM python:3.9 as compile-image
 
 RUN groupadd --gid 2000 python
 RUN useradd --uid 2000 --gid python --shell /usr/sbin/nologin --create-home python
@@ -22,7 +22,7 @@ FROM scratch AS runtime-image
 
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
     LANG="C.UTF-8" \
-    PYTHON_VERSION=3.10.8 \
+    PYTHON_VERSION=3.9.16 \
     PYTHONUNBUFFERED=1 \
     WORKDIR=/srv/www/ \
     PYTHONPATH=/srv/www
