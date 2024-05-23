@@ -1,6 +1,6 @@
 from io import BytesIO
 
-from config.openai_client import client, generate_response, generate_transcription
+from wolf_assistant.config.openai_client import client, generate_response, generate_transcription
 from telegram import Update
 
 

@@ -64,7 +64,7 @@ jobs:
         SERVER_USER: ${{ secrets.SERVER_USER }}
         WORK_DIR: /deployments
       run: |
-        mkdir -p ~/.ssh
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts

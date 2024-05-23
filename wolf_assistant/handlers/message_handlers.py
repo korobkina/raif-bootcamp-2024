@@ -1,4 +1,4 @@
-from config.openai_client import client, generate_response
+from wolf_assistant.config.openai_client import client, generate_response
 from telegram import Update
 
 
