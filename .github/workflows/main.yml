@@ -69,17 +69,18 @@ jobs:
         SERVER_USER: ${{ secrets.SERVER_USER }}
         WORK_DIR: /root/deployments
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        OA: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
         ssh-keyscan -t rsa $SERVER_HOST >> ~/.ssh/known_hosts
         ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "
           cd $WORK_DIR &&
-          TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN &&
+          export TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN &&
+          export OPENAI_API_KEY=$OPENAI_API_KEY &&
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin &&
           docker pull ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest &&
           docker stop telegram-bot &&
           docker rm telegram-bot &&
-          docker run -d -p 0.0.0.0:8000:8000/tcp -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN -e OPENAI_API_KEY="$OA" --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest sh -c 'echo TELEGRAM_BOT_TOKEN is $TELEGRAM_BOT_TOKEN'
+          docker run -d -p 0.0.0.0:8000:8000/tcp -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN -e OPENAI_API_KEY=OPENAI_API_KEY --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
         "
 
     - name: Cleanup 
