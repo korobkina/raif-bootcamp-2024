@@ -12,7 +12,7 @@ COPY pyproject* ./
 
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --only main --no-interaction --no-ansi
 
 RUN apt-get remove -y gcc cmake make
 RUN rm -rf /var/lib/apt/lists/* && apt-get autoremove -y && apt-get clean

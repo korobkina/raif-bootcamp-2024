@@ -21,14 +21,14 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.10'
 
     - name: Install Poetry
       run: |
         curl -sSL https://install.python-poetry.org | python -
     
     - name: Install dependencies
-      run: poetry install
+      run: poetry install --only test,format --no-interaction --no-ansi
 
     - name: Run linters
       run: |
