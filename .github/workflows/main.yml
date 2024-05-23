@@ -65,16 +65,27 @@ jobs:
         WORK_DIR: /deployments
       run: |
         sudo apt-get install sshpass
+        echo "1"
         install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "2"
         echo "${SSH_PRIVATE_KEY}" | base64 -d > ~/.ssh/id_rsa
+        echo "3"
         chmod 600 ~/.ssh/id_rsa
+        echo "4"
         ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+        echo "5"
         sshpass -p ${{ secrets.SERVER_PASSWORD }} $SERVER_USER@$SERVER_HOST
+        echo "6"
           mkdir -p $WORK_DIR
+          echo "7"
           cd $WORK_DIR
+          echo "8"
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          echo "9"
           docker pull ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
+          echo "10"
           docker run -d -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -e TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
+          echo "11"
 
     - name: Cleanup 
       run: rm -rf ~/.ssh
