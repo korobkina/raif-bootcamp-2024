@@ -31,10 +31,11 @@ jobs:
       run: poetry install
 
     - name: Run linters
-      run: poetry run black .
-      run: poetry run autoflake .
-      run: poetry run isort .
-      run: poetry run pybetter .
+      run: |
+        poetry run black .
+        poetry run autoflake .
+        poetry run isort .
+        poetry run pybetter .
 
     - name: Run tests
       run: poetry run pytest
