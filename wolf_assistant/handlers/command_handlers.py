@@ -6,11 +6,17 @@ from telegram.ext import ContextTypes
 
 async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # объект обновления
-    update_obj = json.dumps(update.to_dict(), indent=4)
 
-    # ответ
-    reply = "*update object*\n\n" + "```json\n" + update_obj + "\n```"
+    reply = """
+    *Ассистент Бот для Data Scientists и Аналитиков*
 
+     Привет! Я ваш Ассистент Бот, созданный специально для Data Scientists и аналитиков. Моя цель — помочь вам в вашей повседневной работе, ответить на вопросы и предоставить полезную информацию. Вот некоторые особенности моей работы:
+
+    - *Одно сообщение — один ответ:* Я не удерживаю контекст между сообщениями, поэтому каждое ваше сообщение рассматривается как отдельный запрос.
+    - *Интеграция с OpenAI:* Я использую модели OpenAI для генерации ответов на ваши вопросы.
+
+    Не стесняйтесь задавать свои вопросы, и я постараюсь помочь вам максимально эффективно!
+    """
     # перенаправление ответа в Telegram
     await update.message.reply_text(reply, parse_mode="Markdown")
 
