@@ -74,7 +74,7 @@ jobs:
         echo "4"
         ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
         echo "5"
-        sshpass -p ${{ secrets.SERVER_PASSWORD }} $SERVER_USER@$SERVER_HOST
+        sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password $SERVER_USER@$SERVER_HOST
         echo "6"
           mkdir -p $WORK_DIR
           echo "7"
