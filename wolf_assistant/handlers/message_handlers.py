@@ -1,6 +1,6 @@
+from config.openai_client import client, generate_response
 from telegram import Update
-from config.openai_client import client
-from config.openai_client import generate_response
+
 
 async def chatgpt_reply(update: Update, context):
     # текст входящего сообщения
@@ -14,3 +14,8 @@ async def chatgpt_reply(update: Update, context):
 
     print("user:", text)
     print("assistant:", reply)
+
+
+__all__ = [
+    'chatgpt_reply'
+]

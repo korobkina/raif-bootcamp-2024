@@ -1,11 +1,13 @@
-from telegram.ext import MessageHandler, CommandHandler, filters
+from telegram.ext import CommandHandler, MessageHandler, filters
+
 from wolf_assistant.config.telegram_bot import application
-from wolf_assistant.handlers.command_handlers import start_reply
-from wolf_assistant.handlers.message_handlers import chatgpt_reply
 from wolf_assistant.handlers.audio_handlers import audio_reply
-from wolf_assistant.handlers.video_note_handlers import video_note_reply
+from wolf_assistant.handlers.command_handlers import start_reply
 from wolf_assistant.handlers.image_file_handlers import image_file_reply
+from wolf_assistant.handlers.message_handlers import chatgpt_reply
 from wolf_assistant.handlers.video_file_handlers import video_file_reply
+from wolf_assistant.handlers.video_note_handlers import video_note_reply
+
 
 # Регистрация обработчиков команд
 start_handler = CommandHandler("start", start_reply)
@@ -33,3 +35,13 @@ application.add_handler(video_handler)
 
 # Запуск бота
 application.run_polling()
+
+
+__all__ = [
+    'audio_handler',
+    'message_handler',
+    'photo_handler',
+    'start_handler',
+    'video_handler',
+    'video_note_handler'
+]

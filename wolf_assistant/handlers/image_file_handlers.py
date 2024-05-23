@@ -1,6 +1,8 @@
 from telegram import Update
+
 from wolf_assistant.config.openai_client import client
 from wolf_assistant.utils.helpers import image_to_base64
+
 
 async def image_file_reply(update, context):
     # Получение объекта File
@@ -19,12 +21,12 @@ async def image_file_reply(update, context):
                 "role": "user",
                 "content": [
                     {
-                        "type": "text", 
+                        "type": "text",
                         "text": caption,
                     },
                     {
                         "type": "image_url",
-                        "image_url":{
+                        "image_url": {
                             "url": image_file.file_path,
                         },
                     },
@@ -40,3 +42,8 @@ async def image_file_reply(update, context):
 
     # перенаправление ответа в Telegram
     await update.message.reply_text(reply)
+
+
+__all__ = [
+    'image_file_reply'
+]

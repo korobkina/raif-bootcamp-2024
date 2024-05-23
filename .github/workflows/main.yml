@@ -31,7 +31,10 @@ jobs:
       run: poetry install
 
     - name: Run linters
-      run: poetry run flake8 .
+      run: poetry run black .
+      run: poetry run autoflake .
+      run: poetry run isort .
+      run: poetry run pybetter .
 
     - name: Run tests
       run: poetry run pytest

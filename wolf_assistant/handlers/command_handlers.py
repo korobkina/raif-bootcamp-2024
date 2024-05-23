@@ -1,7 +1,8 @@
 import json
 
-from telegram import Update,KeyboardButton, ReplyKeyboardMarkup
+from telegram import KeyboardButton, ReplyKeyboardMarkup, Update
 from telegram.ext import ContextTypes
+
 
 async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # объект обновления
@@ -14,3 +15,8 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(reply, parse_mode="Markdown")
 
     print("assistant:", reply)
+
+
+__all__ = [
+    'start_reply'
+]

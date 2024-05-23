@@ -1,7 +1,10 @@
-from telegram import Update
-from wolf_assistant.config.openai_client import client, generate_transcription
 from io import BytesIO
-from wolf_assistant.utils.helpers import frames_to_base64, convert_to_ogg
+
+from telegram import Update
+
+from wolf_assistant.config.openai_client import client, generate_transcription
+from wolf_assistant.utils.helpers import convert_to_ogg, frames_to_base64
+
 
 async def video_file_reply(update, context):
     # получение объекта video_file
@@ -10,10 +13,10 @@ async def video_file_reply(update, context):
 
     # конвертация видео в формат .ogg
     audio_bytes = BytesIO(await video_file.download_as_bytearray())
-    
+
     # получение кадров видео
     video_frames = frames_to_base64(video_file)
-    print("length of video_frames -> ", len(video_frames))  
+    print("length of video_frames -> ", len(video_frames))
 
     # запрос транскрипции аудио
     transcription = generate_transcription(audio_bytes) if audio_bytes else "No transcription"
@@ -31,11 +34,11 @@ async def video_file_reply(update, context):
                 "role": "user",
                 "content": [
                     {
-                        "type": "text", 
+                        "type": "text",
                         "text": transcription,
                     },
-                     {
-                        "type": "text", 
+                    {
+                        "type": "text",
                         "text": caption,
                     },
                     *map(lambda x: {"image": x, "resize": 768}, video_frames[0::300]),
@@ -51,3 +54,8 @@ async def video_file_reply(update, context):
 
     # перенаправление ответа в Telegram
     await update.message.reply_text(reply)
+
+
+__all__ = [
+    'video_file_reply'
+]
