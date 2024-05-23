@@ -1,3 +1,5 @@
+"""Helpers."""
+
 import base64
 import subprocess
 
@@ -12,7 +14,7 @@ def frames_to_base64(video_file):
         if not success:
             break
         _, buffer = cv2.imencode(".jpg", frame)
-        base64Frames.append(base64.b64encode(buffer).decode("utf-8"))
+        base64Frames.append(base64.b64encode(buffer).decode("utf-8"))  # type: ignore
     video.release()
     cv2.destroyAllWindows()
     return base64Frames
@@ -27,10 +29,3 @@ def convert_to_ogg(file_path):
     ogg_file = file_path.replace(".mov", ".ogg")
     subprocess.run(["ffmpeg", "-i", file_path, ogg_file])
     return ogg_file
-
-
-__all__ = [
-    'convert_to_ogg',
-    'frames_to_base64',
-    'image_to_base64'
-]
