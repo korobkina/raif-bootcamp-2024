@@ -78,7 +78,7 @@ jobs:
         docker pull ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
         docker stop telegram-bot
         docker rm telegram-bot
-        echo $TB
+        echo "${{ secrets.TELEGRAM_BOT_TOKEN }}"
         docker run -d -e OPENAI_API_KEY=$OA -e TELEGRAM_BOT_TOKEN=$TB --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
         ENDSSH
 
