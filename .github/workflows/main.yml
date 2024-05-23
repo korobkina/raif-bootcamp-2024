@@ -65,9 +65,14 @@ jobs:
         WORK_DIR: /deployments
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+        echo $SERVER_HOST 
+        echo ${SSH_PRIVATE_KEY}
+
+        echo "${SSH_PRIVATE_KEY}" | base64 -d > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+        cat ~/.ssh/known_hosts
+        cat ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST
           mkdir -p $WORK_DIR
           cd $WORK_DIR
