@@ -37,3 +37,11 @@ class MongoLogger:
             **kwargs
         }
         self.log_event('users', user_entry)
+
+    def log_error(self, message: str, reply: str = '', chat_id: int = 0):
+        error_entry = {
+            'message': message,
+            'reply': reply,
+            'chat_id': chat_id
+        }
+        self.log_event('error', error_entry)
