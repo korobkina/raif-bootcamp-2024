@@ -69,6 +69,8 @@ def escape_markdown_v2(s: str) -> str:
             prev_code_end = code_end
         if code_intervals and code_intervals[-1][1] < len(s):
             yield 'outside', s[code_intervals[-1][1]:]
+        if not code_intervals:
+            yield 'outside', s
 
     return ''.join(
         escape_all_special_chars(s)
