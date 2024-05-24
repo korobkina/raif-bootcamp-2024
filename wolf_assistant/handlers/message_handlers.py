@@ -9,6 +9,7 @@ from telegram.error import BadRequest
 
 from wolf_assistant.backend.mongo_logger import MongoLogger
 from wolf_assistant.clients.openai_client import generate_response, prepare_prompt, check_tokens_length
+from wolf_assistant.data.constant_messages import PLEASE_WAIT_MESSAGE
 from wolf_assistant.metrics import metrics
 from wolf_assistant.utils.escape_markdown_v2 import escape_markdown_v2
 
@@ -40,6 +41,8 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
     logger.debug(f"Input message: {text}, Context: {context}")
 
     prompt: str = prepare_prompt(input_text=text, input_format="text")
+
+    wait_message = await update.message.reply_text(PLEASE_WAIT_MESSAGE, parse_mode="MarkdownV2")
 
     token_flag, number_tokens = check_tokens_length(prompt=prompt)
     if token_flag:
