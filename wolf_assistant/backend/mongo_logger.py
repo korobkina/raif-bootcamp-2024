@@ -15,12 +15,13 @@ class MongoLogger:
         event_data['timestamp'] = datetime.datetime.utcnow()
         collection.insert_one(event_data)
 
-    def log_message(self, chat_id: int, text: str, command: str, response_text: str):
+    def log_message(self, chat_id: int, text: str, command: str, response_text: str, **kwargs):
         log_entry = {
             'chat_id': chat_id,
             'command': command,  # 'start', 'text', 'voice', 'video_note', 'video', 'photo
             'text': text,
-            'response_text': response_text
+            'response_text': response_text,
+            'add_info': kwargs if kwargs else None
         }
         self.log_event('messages', log_entry)
 
