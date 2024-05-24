@@ -8,6 +8,7 @@ from wolf_assistant.backend.mongo_logger import MongoLogger
 from wolf_assistant.data.constant_messages import START_MESSAGE_TEMPLATE
 
 from wolf_assistant.metrics import metrics
+from wolf_assistant.utils.helpers import meme_pic
 
 
 async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_logger: MongoLogger) -> None:
@@ -43,3 +44,32 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_log
 
     logger.debug(f"Assistant state Start: {dummy_mess}, Context: {context}")
     logger.debug(f"Assistant state Start: {reply}, Context: {context}")
+
+
+
+async def meme_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_logger: MongoLogger) -> None:
+    """
+    Service commands reply
+    Args:
+        update (Update): Telegram object represented an incoming update.
+        context (ContextTypes.DEFAULT_TYPE): context object
+        mg_logger: MongoLogger object
+    """
+
+    metrics.REQUEST_COUNT.inc()
+    metrics.MEME_REQUEST_COUNT.inc()
+
+    reply = meme_pic()
+    update_obj = json.dumps(update.to_dict(), indent=4)
+    dummy_mess = "*update object*\n\n" + "```json\n" + update_obj + "\n```"  # Dummy message
+    command = update.message.text
+    if update.message:
+        chat_id = update.message.chat_id
+        logger.debug(f"Input message: {command}, Context: {context}")
+        mg_logger.log_message(chat_id, command, command, 0, "meme")
+        mg_logger.log_user_info(chat_id=update.message.chat_id, user_info=update.to_dict())
+        await update.message.reply_photo(reply)# перенаправление ответа в Telegram
+
+
+    logger.debug(f"Assistant state Meme: {dummy_mess}, Context: {context}")
+    logger.debug(f"Assistant state Meme: meme, Context: {context}")

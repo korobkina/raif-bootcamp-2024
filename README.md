@@ -1,5 +1,5 @@
 # Status 
-[![Deployment Status](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml/badge.svg)](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml) [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) ![MongoDB](https://img.shields.io/badge/database-MongoDB-green) ![Prometheus](https://img.shields.io/badge/monitoring-Prometheus-orange) ![Grafana](https://img.shields.io/badge/monitoring-Grafana-blue)
+[![Deployment Status](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml/badge.svg)](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml) [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) ![MyPy](https://img.shields.io/badge/type%20checker-MyPy-violet) ![MongoDB](https://img.shields.io/badge/database-MongoDB-green) ![Prometheus](https://img.shields.io/badge/monitoring-Prometheus-orange) ![Grafana](https://img.shields.io/badge/monitoring-Grafana-red) 
 
 
 # Raiffeisen bootcamp 2024 - Data Scientist assistant telegram bot
@@ -39,19 +39,19 @@ poetry run python wolf_assistant/app.py
 # Docker
 You can build and run Docker locally 
 ```
-docker build -t ds_wolves/telegram-bot:latest .
+docker build -t dswolves/telegram-bot:latest .
 docker run -d -e TELEGRAM_BOT_TOKEN=<your token> -e OPENAI_API_KEY=<your api key> \
    -e MONGO_INITDB_ROOT_USERNAME=<your mongo user> -e MONGO_INITDB_ROOT_PASSWORD=<your mongo pass> \
-   -e ENV=PROD --name telegram-bot ds_wolves/telegram-bot:latest
+   -e ENV=PROD --name telegram-bot dswolves/telegram-bot:latest
 ```
 (you also can specify these variables in settings.py and backend/db_con.py) \
 \
 Or get latest version from DockerHub (https://hub.docker.com/repository/docker/dswolves/telegram-bot/general)
 ```
-docker pull ds_wolves/telegram-bot:latest
+docker pull dswolves/telegram-bot:latest
 docker run -d -e TELEGRAM_BOT_TOKEN=<your token> -e OPENAI_API_KEY=<your api key> \
    -e MONGO_INITDB_ROOT_USERNAME=<your mongo user> -e MONGO_INITDB_ROOT_PASSWORD=<your mongo pass> \
-   -e ENV=PROD --name telegram-bot ds_wolves/telegram-bot:latest
+   -e ENV=PROD --name telegram-bot dswolves/telegram-bot:latest
 ```
 
 Using docker compose (for `bot`, `mongodb`, `prometheus` and `grafana`)
