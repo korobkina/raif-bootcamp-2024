@@ -66,16 +66,14 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
     else:
         user = {"user_unknown": "unknown user"}
 
-
     mg_logger.log_message(chat_id, text, command, reply, number_tokens, **user)
-
- 
-    # перенаправление ответа в Telegram
 
     try:
         await update.message.reply_text(reply, parse_mode="Markdown")
     except BadRequest as err:
-        logger.error(f"Error: {err}")
+        msg = f"Error: {err}"
+        mg_logger.log_error(msg, reply=reply, chat_id=chat_id)
+        logger.error(msg)
         await update.message.reply_text("Ошибка при парсинге кода в  маркдаун 😔 " 
                                         "\n Попробуйте поменьше участок кода отправить"
                                         "\n Или попробуй скопировать текст и отправить его к себе в сообщения"
