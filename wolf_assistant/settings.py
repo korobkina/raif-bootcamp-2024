@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def wrap_env_var(val: typing.Optional[str], default_val: str) -> str:
-    """Wrap variable
+    """Wrap variable.
 
     Args:
         val (typing.Optional[str]): variable value

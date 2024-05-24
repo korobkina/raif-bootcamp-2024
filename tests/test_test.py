@@ -3,6 +3,4 @@ def test_nothing():
     assert 1 == 1
 
 
-__all__ = [
-    'test_nothing'
-]
+__all__ = ['test_nothing']

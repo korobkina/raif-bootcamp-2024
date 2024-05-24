@@ -2,9 +2,9 @@
 
 import typing
 from io import BytesIO
-from loguru import logger
 
-from openai import OpenAI, APIConnectionError
+from loguru import logger
+from openai import APIConnectionError, OpenAI
 from openai.types.audio.transcription import Transcription
 from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_content_part_image_param import ChatCompletionContentPartImageParam, ImageURL
@@ -44,7 +44,7 @@ def openapi_exception(func: typing.Callable) -> typing.Callable:
         except APIConnectionError as err:
             logger.error(err)
             return f"{str(err)} Please check `OPENAI_API_KEY` and VPN"
-       
+
     return internal_func
 
 

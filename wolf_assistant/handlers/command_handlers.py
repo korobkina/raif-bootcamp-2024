@@ -4,6 +4,8 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import ContextTypes
 
+from wolf_assistant.metrics import metrics
+
 
 async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
@@ -28,6 +30,8 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         await update.message.reply_text(reply, parse_mode="Markdown")  # перенаправление ответа в Telegram
     else:
         raise AttributeError("update.message is None")
+    metrics.CURRENT_USERS.inc()
+    metrics.REQUEST_COUNT.inc()
 
     logger.debug(f"Assistant state Start: {reply_update}, Context: {context}")
     logger.debug(f"Assistant state Start: {reply}, Context: {context}")
