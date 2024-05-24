@@ -4,7 +4,7 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from backend.mongo_logger import MongoLogger
+from wolf_assistant.backend.mongo_logger import MongoLogger
 
 from wolf_assistant.metrics import metrics
 
