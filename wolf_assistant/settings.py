@@ -24,7 +24,7 @@ def wrap_env_var(val: typing.Optional[str], default_val: str) -> str:
     return new_val
 
 
-TELEGRAM_BOT_TOKEN: str = wrap_env_var(os.getenv("TELEGRAM_BOT_TOKEN"), "6365671290:AAG5mPJiKFmIio6S6inphxqwdOxa1pRKMXE")
+TELEGRAM_BOT_TOKEN: str = wrap_env_var(os.getenv("TELEGRAM_BOT_TOKEN"), "")
 OPENAI_API_KEY: str = wrap_env_var(os.getenv("OPENAI_API_KEY"), "")
 GPT_VERSION: str = wrap_env_var(os.getenv("GPT_VERSION"), "gpt-4o")
 
