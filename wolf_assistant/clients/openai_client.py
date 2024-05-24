@@ -10,8 +10,10 @@ from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_content_part_image_param import ChatCompletionContentPartImageParam, ImageURL
 from openai.types.chat.chat_completion_content_part_text_param import ChatCompletionContentPartTextParam
 from openai.types.chat.chat_completion_user_message_param import ChatCompletionUserMessageParam
+import tiktoken
 
-from wolf_assistant.settings import GPT_VERSION, OPENAI_API_KEY
+from wolf_assistant.clients import prompts
+from wolf_assistant.settings import GPT_VERSION, OPENAI_API_KEY, MAX_TOKENS_DICT
 
 
 CLIENT: OpenAI = OpenAI(
@@ -43,7 +45,7 @@ def openapi_exception(func: typing.Callable) -> typing.Callable:
             return func(*args, **kwargs)
         except APIConnectionError as err:
             logger.error(err)
-            return f"{str(err)} Please check `OPENAI_API_KEY` and VPN"
+            return f"{str(err)} Please check `OPENAI_API_KEY` or VPN or Internet Connection"
        
     return internal_func
 
@@ -190,3 +192,37 @@ def generate_file_response(url: str, caption: typing.Optional[str] = None, max_t
     )
     message: str = format_message(response)
     return message
+
+
+def prepare_prompt(input_text: str, input_format: typing.Literal["text", "image", "audio", "video"]) -> str:
+    """Prepare prommpt
+
+    Args:
+        input_text (str): input text from chat bot
+        input_format (typing.Literal["text", "image", "audio", "video"]): input format
+
+    Returns:
+        prompt for ChatGPT
+    """
+    if input_format == "text":
+        prompt = "\n".join([prompts.CODE_DESC_TASK, prompts.TEXT_EXAMPLE, prompts.CODE_DESC_BODY.substitute(input_text=input_text)])
+    else:
+        logger.warning(f"Please develope prompt for {input_format}, input_text is used as prompt")
+        prompt = input_text
+
+    return prompt
+
+def check_tokens_length(prompt: str) -> bool:
+    """_summary_
+
+    Args:
+        prompt (str): _description_
+
+    Returns:
+        bool: _description_
+    """
+    encoding = tiktoken.encoding_for_model(GPT_VERSION)
+    tokens = encoding.encode(prompt)
+    max_tokens_length = MAX_TOKENS_DICT.get(GPT_VERSION, 4096)
+    logger.debug(f"Number of tokens: {len(tokens)}, Max tokens: {max_tokens_length}")
+    return len(tokens) < max_tokens_length
