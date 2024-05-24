@@ -4,7 +4,7 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from backend.mongo_logger import MongoLogger
+from wolf_assistant.backend.mongo_logger import MongoLogger
 from wolf_assistant.clients.openai_client import generate_response, prepare_prompt, check_tokens_length
 
 
@@ -17,6 +17,12 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
         mg_logger: MongoLogger object
     """
     command = "text"
+    
+    chat_id: str
+    if update.message and update.message.chat_id:
+        chat_id = update.message.chat_id
+    else:
+        chat_id = "unknown"
 
     if update.message and update.message.text:
         text: str = update.message.text
@@ -41,8 +47,6 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
     else:
         user = "unknown user"
 
-    chat_id = update.message.chat_id
-
     mongo_log = {
         "user": {
             "id": user.id,
@@ -54,6 +58,7 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
         "text": text,
         "reply": reply,
     }
+
     mg_logger.log_event('messages', mongo_log)
 
     # перенаправление ответа в Telegram
