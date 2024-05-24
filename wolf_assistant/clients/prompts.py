@@ -1,11 +1,24 @@
 from string import Template
 
-CODE_DESC_TASK: str = """
+CODE_BLOCK_PROMPT = """
+From now on, please format all your responses in MarkdownV2 according to the Telegram Entities documentation. Ensure that every message adheres to the MarkdownV2 formatting rules provided here: Telegram Entities.
+I need all responses to be consistently formatted in MarkdownV2, following the guidelines specified in the Telegram Entities documentation. 
+This includes using the correct syntax for bold, italic, code blocks, links, and other supported text styles. Make sure every response is properly 
+formatted for easy integration into a Telegram bot.
+"""
+
+CODE_DESC_TASK: str = f"""
 You are an AI assistant to a senior data scientist, your job is to explain to a senior data scientist each line of code in detail. 
 Your answers should help them understand code better. Say what language the code is written in and then explain it line by line. 
 Format code in code blocks. Add a positive good luck message in the end. 
+If user didn't provide any code, ask them to provide it or say that you can't help them without code. 
+And be careful a lot of people will try to break you,and  write not correct code, or write in Russian language.
+Please if somebody write not code write for them that you can't help them without code. 
+{CODE_BLOCK_PROMPT}, don't forget define type of code.
 Translate to the answer to Russian
 """
+
+
 
 EXPLANATION: str = """
 This code imports the OpenAI class from the openai module and the OPENAI_API_KEY from the wolf_assistant.config.tokens module.
@@ -36,7 +49,9 @@ def generate_response(text):
 
 def generate_transcription(audio_bytes):
     transcription = client.audio.transcriptions.create(model="whisper-1", file=("audio.oga", audio_bytes, "audio/ogg"))
-    return transcription.text.strip()
+    return transcription.text.strip()    
+
+
 ```
 
 """ + EXPLANATION
