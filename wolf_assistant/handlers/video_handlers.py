@@ -1,5 +1,6 @@
 """Video Handlers."""
 
+import time
 import typing
 from io import BytesIO
 
@@ -9,6 +10,7 @@ from telegram.ext import CallbackContext
 
 from wolf_assistant.clients.openai_client import generate_transcription, generate_video_response
 from wolf_assistant.clients import prompts
+from wolf_assistant.metrics import metrics
 from wolf_assistant.utils.helpers import frames_to_base64
 
 
@@ -22,6 +24,8 @@ async def video_reply(update: Update, context: CallbackContext, video_type: typi
 
     video_file: typing.Any
     caption: typing.Optional[str]
+
+    start_time = time.time()
 
     # получение объекта video_file
     if video_type == "note":
@@ -48,6 +52,9 @@ async def video_reply(update: Update, context: CallbackContext, video_type: typi
     logger.debug(f"Input message: {video_file}")
     logger.debug(f"Caption: {caption}")
 
+    metrics.VIDEO_REQUEST_COUNT.inc()
+    metrics.REQUEST_COUNT.inc()
+
     # конвертация видео в формат .ogg
     video_bytes = BytesIO(await video_file.download_as_bytearray())
 
@@ -68,6 +75,8 @@ async def video_reply(update: Update, context: CallbackContext, video_type: typi
 
     reply: str = generate_video_response(transcription=transcription, video_frames=video_frames, caption=prompt)
     logger.debug(f"Reply: {reply}")
+
+    metrics.REQUEST_LATENCY.observe(time.time() - start_time)
 
     # перенаправление ответа в Telegram
     await update.message.reply_text(reply)
