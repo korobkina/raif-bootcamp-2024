@@ -6,6 +6,8 @@ from telegram.ext import ContextTypes
 
 from backend.mongo_logger import MongoLogger
 
+from wolf_assistant.metrics import metrics
+
 
 async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_logger: MongoLogger) -> None:
     """
@@ -15,6 +17,9 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_log
         context (ContextTypes.DEFAULT_TYPE): context object
         mg_logger: MongoLogger object
     """
+
+    metrics.CURRENT_USERS.inc()
+    metrics.REQUEST_COUNT.inc()
     
     user_name: str = "Дорогой друг"
     if update.effective_user:
