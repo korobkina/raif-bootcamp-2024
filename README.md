@@ -1,5 +1,5 @@
 # Status 
-[![Deployment Status](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml/badge.svg)](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml) [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Deployment Status](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml/badge.svg)](https://github.com/korobkina/raif-bootcamp-2024/actions/workflows/main.yml) [![python](https://img.shields.io/badge/Python-3.9-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org) [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) ![MongoDB](https://img.shields.io/badge/database-MongoDB-green) ![Prometheus](https://img.shields.io/badge/monitoring-Prometheus-orange) ![Grafana](https://img.shields.io/badge/monitoring-Grafana-blue)
 
 
 # Raiffeisen bootcamp 2024 - Data Scientist assistant telegram bot
@@ -46,11 +46,25 @@ docker run -d -e TELEGRAM_BOT_TOKEN=<your token> -e OPENAI_API_KEY=<your api key
    -e ENV=PROD --name telegram-bot ds_wolves/telegram-bot:latest
 ```
 
-Using docker compose (for bot, mongodb, prometheus and grafana)
+Using docker compose (for `bot`, `mongodb`, `prometheus` and `grafana`)
 ```
 export ENV=DEV_DOCKER
 docker-compose -f docker-compose.yml up -d
 ```
+# Prometheus and Grafana
+
+Configure Grafana:
+- Open Grafana at http://localhost:3000.
+- Log in (default credentials: admin/admin).
+- Add Prometheus as a data source:
+  - Go to Configuration > Data Sources.
+  - Click on "Add data source".
+  - Select "Prometheus".
+  - Set the URL to http://prometheus:9090. \
+
+Create a dashboard:
+- Go to Create > Dashboard.
+- Add a new panel and configure it to use the metrics from Prometheus.
 
 
 # Deploy
