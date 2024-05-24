@@ -8,6 +8,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from wolf_assistant.clients.openai_client import generate_transcription, generate_video_response
+from wolf_assistant.clients import prompts
 from wolf_assistant.utils.helpers import frames_to_base64
 
 
@@ -35,7 +36,12 @@ async def video_reply(update: Update, context: CallbackContext, video_type: typi
         else:
             raise AttributeError("update.message is None")
 
-        caption = update.message.caption if update.message.caption else "No caption"
+        if update.message and update.message.caption:
+            caption = update.message.caption
+        else:
+            caption = ""
+        logger.debug(f"Caption: {caption}")
+
     else:
         raise AttributeError(f"Unknown video type: {video_type}")
 
@@ -54,7 +60,13 @@ async def video_reply(update: Update, context: CallbackContext, video_type: typi
     logger.debug(f"Transcription: {transcription}")
 
     # обработка видео openai
-    reply: str = generate_video_response(transcription=transcription, video_frames=video_frames, caption=caption)
+    prompt: str
+    if caption and len(caption) > 0:
+        prompt = caption
+    else:
+        prompt = prompts.CODE_DESC_TASK
+
+    reply: str = generate_video_response(transcription=transcription, video_frames=video_frames, caption=prompt)
     logger.debug(f"Reply: {reply}")
 
     # перенаправление ответа в Telegram

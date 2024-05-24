@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      ENV: DEV_DOCKER
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin_password
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      botnet:
+        aliases:
+          - localhost
+    ports:
+      - 27017:27017
+
+  bot:
+    image: dswolves/telegram-bot:latest
+    container_name: telegram-bot
+    restart: always
+    volumes:
+      - ./:/srv/www/:delegated
+    tmpfs:
+      - /run
+      - /tmp
+      - /var/run
+    depends_on:
+      - mongo
+    networks:
+      botnet:
+        aliases:
+          - localhost
+    command: python /srv/www/wolf_assistant/app.py
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - botnet
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - botnet
+  
+
+volumes:
+  mongo_data:
+
+
+networks:
+  botnet:

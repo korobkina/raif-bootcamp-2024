@@ -18,6 +18,13 @@ def get_mongo_conf() -> MongoConfig:
             username="admin",
             password="admin_password"
         )
+    elif ENV == "DEV_DOCKER":
+        return MongoConfig(
+            uri="mongodb://host.docker.internal:27017",
+            db_name="telegram_bot",
+            username="admin",
+            password="admin_password"
+        )
     else:
         return MongoConfig(
             uri="mongodb://159.65.124.137:27017",

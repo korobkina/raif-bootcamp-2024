@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from wolf_assistant.clients.openai_client import generate_file_response
-
+from wolf_assistant.clients import prompts
 
 async def image_file_reply(update: Update, context: CallbackContext) -> None:
     """Sorce File reply from chatgpt.
@@ -22,10 +22,20 @@ async def image_file_reply(update: Update, context: CallbackContext) -> None:
     logger.debug(f"Input message: {image_file}")
 
     # Получение подписи к изображению
-    caption = update.message.caption
+    caption: str
+    prompt: str
+    if update.message and update.message.caption:
+        caption = update.message.caption
+    else:
+        caption = ""
     logger.debug(f"Caption: {caption}")
 
-    reply = generate_file_response(url=image_file.file_path, caption=caption)
+    if len(caption) > 0:
+        prompt = caption
+    else:
+        prompt = prompts.CODE_DESC_TASK
+    
+    reply = generate_file_response(url=image_file.file_path, caption=prompt)
     logger.debug(f"Reply: {reply}")
 
     # перенаправление ответа в Telegram

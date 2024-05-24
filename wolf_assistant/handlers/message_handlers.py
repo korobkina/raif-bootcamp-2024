@@ -69,6 +69,7 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
 
     mg_logger.log_message(chat_id, text, command, reply, number_tokens, **user)
 
+ 
     # перенаправление ответа в Telegram
 
     try:
