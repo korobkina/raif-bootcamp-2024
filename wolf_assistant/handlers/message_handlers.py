@@ -65,11 +65,13 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
     metrics.REQUEST_LATENCY.observe(time.time() - start_time)
 
     try:
+        await wait_message.delete()
         await update.message.reply_text(reply, parse_mode="MarkdownV2")
     except BadRequest as err:
         msg = f"Error: {err}"
         mg_logger.log_error(msg, reply=reply, chat_id=chat_id)
         logger.error(msg)
+        await wait_message.delete()
         await update.message.reply_text("Ошибка при парсинге кода в  маркдаун 😔 " 
                                         "\n Попробуйте поменьше участок кода отправить"
                                         "\n Или попробуй скопировать текст и отправить его к себе в сообщения"
