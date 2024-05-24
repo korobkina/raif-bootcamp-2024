@@ -3,8 +3,8 @@
 from loguru import logger
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-from backend.mongo_logger import MongoLogger
-from config.db_con import get_mongo_conf
+from wolf_assistant.backend.mongo_logger import MongoLogger
+from wolf_assistant.backend.db_con import get_mongo_conf
 from wolf_assistant.settings import TELEGRAM_BOT_TOKEN
 from wolf_assistant.data.data_types import Handler
 from wolf_assistant.handlers.audio_handlers import audio_reply
