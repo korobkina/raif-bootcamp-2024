@@ -54,7 +54,7 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
             "first_name": user.first_name,
             "last_name": user.last_name,
         },
-        "command": command,  # "text
+        "command": command,
         "text": text,
         "reply": reply,
     }
