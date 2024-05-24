@@ -5,6 +5,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from wolf_assistant.backend.mongo_logger import MongoLogger
+from wolf_assistant.data.constant_messages import START_MESSAGE_TEMPLATE
 
 from wolf_assistant.metrics import metrics
 
@@ -25,18 +26,7 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_log
     if update.effective_user:
         user_name = update.effective_user.full_name
 
-    reply = f"""
-    🌟 *Ассистент "DS Волчица"* 🌟
-
-    🐺 {user_name}, тебя приветствует DS Волчица. 🐺 Тебе больше не придется разбираться в чужом коде, так как я проинтерпретирую любой код в любом формате (текст, картинка, видео).
-    Жду от тебя кода в сообщении. 🐺
-
-    📜 *Правила взаимодействия:*
-    - *Одно сообщение — один ответ:* Я не удерживаю контекст между сообщениями, поэтому каждое твое сообщение рассматривается как отдельный запрос.
-    - *Интеграция с OpenAI:* Я использую модели OpenAI для генерации ответов на твои вопросы.
-
-    Не стесняйся задавать свои вопросы, и я постараюсь помочь тебе максимально эффективно! 🐺
-    """
+    reply = START_MESSAGE_TEMPLATE.format(user_name=user_name)
     update_obj = json.dumps(update.to_dict(), indent=4)
     dummy_mess = "*update object*\n\n" + "```json\n" + update_obj + "\n```"  # Dummy message
     command = update.message.text
