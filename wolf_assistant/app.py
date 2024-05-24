@@ -1,6 +1,7 @@
 """Main script for the Application."""
 
 from loguru import logger
+from prometheus_client import start_http_server
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
 from wolf_assistant.backend.mongo_logger import MongoLogger
@@ -32,6 +33,11 @@ HANDLERS: list[Handler] = [
     MessageHandler(filters=filters.VIDEO, callback=video_file_reply),  # Регистрация обработчика видео
     MessageHandler(filters=filters.PHOTO, callback=image_file_reply),  # Регистрация обработчика изображений
 ]
+
+
+# Start up the server to expose the metrics.
+start_http_server(8000)  # Expose metrics on port 8000
+
 
 
 if __name__ == "__main__":
