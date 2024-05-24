@@ -13,7 +13,15 @@
 ```
 poetry install --only main,test,format
 ```
-2. Check TELEGRAM_BOT_TOKEN, OPENAI_API_KEY, GPT_VERSION in `wolf_assistant/settings.py`
+2. Check TELEGRAM_BOT_TOKEN, OPENAI_API_KEY, GPT_VERSION in `wolf_assistant/settings.py` or set `.env` file
+with the following variables:
+```
+TELEGRAM_BOT_TOKEN=
+OPENAI_API_KEY=
+ENV=DEV
+MONGO_INITDB_ROOT_USERNAME=admin
+MONGO_INITDB_ROOT_PASSWORD=admin_password
+```
 3. Set environment 
 ```
 export ENV=DEV
@@ -65,6 +73,14 @@ Configure Grafana:
 Create a dashboard:
 - Go to Create > Dashboard.
 - Add a new panel and configure it to use the metrics from Prometheus.
+
+# MongoDb
+- For local development, you can use Pycharm Professional with MongoDB plugin or MongoDB Compass
+- connect to `mongodb://localhost:27017/` with username and password from `docker-compose.mongodb.yml`
+- You can find tables:
+  - error - *info about errors in your app*
+  - messages - *what message reply and what message return from GPT4o*
+  - users - *register all users*
 
 
 # Deploy
