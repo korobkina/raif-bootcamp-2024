@@ -1,8 +1,6 @@
 import datetime
 
-from loguru import logger
 from pymongo import MongoClient
-from pymongo.errors import ServerSelectionTimeoutError
 
 from wolf_assistant.data.data_types import MongoConfig
 
@@ -25,10 +23,13 @@ class MongoLogger:
             'chat_id': chat_id,
             'command': command,  # 'start', 'text', 'voice', 'video_note', 'video', 'photo
             'text': text,
-            'response_text': response_text,
+            'response_text': response_text
         }
         self.log_event('messages', log_entry)
 
     def log_user_info(self, chat_id: int, **kwargs):
-        user_entry = {'chat_id': chat_id, **kwargs}
+        user_entry = {
+            'chat_id': chat_id,
+            **kwargs
+        }
         self.log_event('users', user_entry)
