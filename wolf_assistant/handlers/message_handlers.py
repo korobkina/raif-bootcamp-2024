@@ -1,4 +1,6 @@
 """Message Hanndler."""
+import time
+import re
 
 from loguru import logger
 from telegram import Update
@@ -7,7 +9,8 @@ from telegram.error import BadRequest
 
 from wolf_assistant.backend.mongo_logger import MongoLogger
 from wolf_assistant.clients.openai_client import generate_response, prepare_prompt, check_tokens_length
-import re
+from wolf_assistant.metrics import metrics
+
 
 SPECIAL_CHAR_REGEX = re.compile(r'([\\_*[\]()~`><&#+\-=|{}.!])')
 CODE_BLOCK_REGEX = re.compile(r'(?is)(```\w* *\n)(.*?)(\n``` *\n)')
@@ -34,6 +37,8 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
         context (ContextTypes.DEFAULT_TYPE): context object
         mg_logger: MongoLogger object
     """
+    start_time = time.time()
+
     command = "text"
     
     chat_id: str
@@ -59,6 +64,8 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
         reply = "Please split your query, number of tokens is too large"
     
     logger.debug(f"Reply: {reply}")
+    
+    metrics.REQUEST_COUNT.inc()
 
     user: str
     if update.message and update.message.from_user:
@@ -69,7 +76,7 @@ async def chatgpt_reply(update: Update, context: CallbackContext,  mg_logger: Mo
 
     mg_logger.log_message(chat_id, text, command, reply, number_tokens, **user)
 
- 
+    metrics.REQUEST_LATENCY.observe(time.time() - start_time)
     # перенаправление ответа в Telegram
 
     try:
