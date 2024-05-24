@@ -1,6 +1,8 @@
 import datetime
 
+from loguru import logger
 from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
 
 from wolf_assistant.data.data_types import MongoConfig
 
@@ -18,12 +20,14 @@ class MongoLogger:
         except ServerSelectionTimeoutError as err:
             logger.warning(f"No connection to Mongo, Error: {err}")
 
-    def log_message(self, chat_id: int, text: str, command: str, response_text: str):
+    def log_message(self, chat_id: int, text: str, command: str, response_text: str, number_tokens: int,  **kwargs):
         log_entry = {
             'chat_id': chat_id,
             'command': command,  # 'start', 'text', 'voice', 'video_note', 'video', 'photo
             'text': text,
-            'response_text': response_text
+            'response_text': response_text,
+            "number_tokens": number_tokens,
+            'add_info': kwargs if kwargs else None
         }
         self.log_event('messages', log_entry)
 

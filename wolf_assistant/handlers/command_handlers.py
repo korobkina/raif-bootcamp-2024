@@ -37,7 +37,7 @@ async def start_reply(update: Update, context: ContextTypes.DEFAULT_TYPE, mg_log
     command = update.message.text
     if update.message:
         logger.debug(f"Input message: {command}, Context: {context}")
-        mg_logger.log_message(chat_id, command, command, reply)
+        mg_logger.log_message(chat_id, command, command, 0, reply)
         mg_logger.log_user_info(chat_id=update.message.chat_id, user_info=update.to_dict())
         await update.message.reply_text(reply, parse_mode="Markdown")  # перенаправление ответа в Telegram
     else:

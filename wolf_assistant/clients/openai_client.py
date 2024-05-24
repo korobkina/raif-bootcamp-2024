@@ -225,4 +225,4 @@ def check_tokens_length(prompt: str) -> bool:
     tokens = encoding.encode(prompt)
     max_tokens_length = MAX_TOKENS_DICT.get(GPT_VERSION, 4096)
     logger.debug(f"Number of tokens: {len(tokens)}, Max tokens: {max_tokens_length}")
-    return len(tokens) < max_tokens_length
+    return len(tokens) < max_tokens_length, len(tokens)
