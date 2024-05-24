@@ -25,9 +25,9 @@ async def chatgpt_reply(update: Update, context: CallbackContext) -> None:
     
     if check_tokens_length(prompt=prompt):
         reply = generate_response(prompt)
-        logger.debug(f"Reply: {reply}")
-
-        # перенаправление ответа в Telegram
-        await update.message.reply_text(reply)
     else:
-        await update.message.reply_text("Please split your query, number of tokens is too large")
+        reply = "Please split your query, number of tokens is too large"
+    
+    logger.debug(f"Reply: {reply}")
+    # перенаправление ответа в Telegram
+    await update.message.reply_text(reply)
