@@ -70,6 +70,8 @@ jobs:
         WORK_DIR: /root/deployments
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+        MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
       run: |
         ssh-keyscan -t rsa $SERVER_HOST >> ~/.ssh/known_hosts
         ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "
@@ -80,7 +82,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest &&
           docker stop telegram-bot &&
           docker rm telegram-bot &&
-          docker run -d -p 0.0.0.0:8000:8000/tcp -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN -e OPENAI_API_KEY=$OPENAI_API_KEY --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
+          docker run -d -p 0.0.0.0:8000:8000/tcp -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN -e OPENAI_API_KEY=$OPENAI_API_KEY -e MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME -e MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD --name telegram-bot ${{ secrets.DOCKER_USERNAME }}/telegram-bot:latest
         "
 
     - name: Cleanup 
