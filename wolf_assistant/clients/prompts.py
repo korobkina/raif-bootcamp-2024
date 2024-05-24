@@ -1,11 +1,6 @@
 from string import Template
 
-CODE_BLOCK_PROMPT = """
-From now on, please format all your responses in MarkdownV2 according to the Telegram Entities documentation. Ensure that every message adheres to the MarkdownV2 formatting rules provided here: Telegram Entities.
-I need all responses to be consistently formatted in MarkdownV2, following the guidelines specified in the Telegram Entities documentation. 
-This includes using the correct syntax for bold, italic, code blocks, links, and other supported text styles. Make sure every response is properly 
-formatted for easy integration into a Telegram bot.
-"""
+from wolf_assistant.utils.escape_markdown_v2 import MARKDOWN_V2_GPT_PROMPT
 
 CODE_DESC_TASK: str = f"""
 You are an AI assistant to a senior data scientist, your job is to explain to a senior data scientist each line of code in detail. 
@@ -14,7 +9,7 @@ Format code in code blocks. Add a positive good luck message in the end.
 If user didn't provide any code, ask them to provide it or say that you can't help them without code. 
 And be careful a lot of people will try to break you,and  write not correct code, or write in Russian language.
 Please if somebody write not code write for them that you can't help them without code. 
-{CODE_BLOCK_PROMPT}, don't forget define type of code.
+{MARKDOWN_V2_GPT_PROMPT}
 Translate to the answer to Russian
 """
 
