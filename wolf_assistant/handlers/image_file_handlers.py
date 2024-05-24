@@ -1,49 +1,32 @@
+from loguru import logger
 from telegram import Update
+from telegram.ext import CallbackContext
 
-from wolf_assistant.config.openai_client import client
-from wolf_assistant.utils.helpers import image_to_base64
+from wolf_assistant.clients.openai_client import generate_file_response
 
 
-async def image_file_reply(update, context):
+async def image_file_reply(update: Update, context: CallbackContext) -> None:
+    """Sorce File reply from chatgpt.
+
+    Args:
+        update (Update): Telegram object represented an incoming update.
+        context (ContextTypes.DEFAULT_TYPE): context object
+    """
+
     # Получение объекта File
-    image_file = await context.bot.get_file(update.message.photo[-1].file_id)
-    print("image_file -> ", image_file)
+    if update.message:
+        image_file = await context.bot.get_file(update.message.photo[-1].file_id)
+    else:
+        raise AttributeError("update.message is None")
+
+    logger.debug(f"Input message: {image_file}")
 
     # Получение подписи к изображению
     caption = update.message.caption
-    print("caption -> ", caption)
+    logger.debug(f"Caption: {caption}")
 
-    # обработка изображения
-    description = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": caption,
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": image_file.file_path,
-                        },
-                    },
-                ],
-            }
-        ],
-        max_tokens=300,
-    )
-
-    # ответ
-    reply = description.choices[0].message.content.strip()
-    print("assistant:", reply)
+    reply = generate_file_response(url=image_file.file_path, caption=caption)
+    logger.debug(f"Reply: {reply}")
 
     # перенаправление ответа в Telegram
     await update.message.reply_text(reply)
-
-
-__all__ = [
-    'image_file_reply'
-]
