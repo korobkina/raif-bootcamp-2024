@@ -12,6 +12,7 @@ python-dotenv = "^1.0.1"
 opencv-python = "^4.9.0.80"
 loguru = "^0.7.2"
 pymongo = "^4.7.2"
+tiktoken = "^0.7.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.0"
