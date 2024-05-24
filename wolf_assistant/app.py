@@ -9,7 +9,7 @@ from wolf_assistant.backend.db_con import get_mongo_conf
 from wolf_assistant.settings import TELEGRAM_BOT_TOKEN
 from wolf_assistant.data.data_types import Handler
 from wolf_assistant.handlers.audio_handlers import audio_reply
-from wolf_assistant.handlers.command_handlers import start_reply
+from wolf_assistant.handlers.command_handlers import start_reply, meme_reply
 from wolf_assistant.handlers.image_file_handlers import image_file_reply
 from wolf_assistant.handlers.message_handlers import chatgpt_reply
 from wolf_assistant.handlers.video_handlers import video_note_reply, video_file_reply
@@ -27,6 +27,7 @@ def create_handler(callback, mg_logger: MongoLogger):
 
 HANDLERS: list[Handler] = [
     CommandHandler(command="start", callback=create_handler(start_reply, mg_logger)),  # Регистрация обработчиков команд
+    CommandHandler(command="meme", callback=create_handler(meme_reply, mg_logger)),
     MessageHandler(filters=filters.TEXT & ~filters.COMMAND, callback=create_handler(chatgpt_reply, mg_logger)),  # Регистрация обработчика текстовых сообщений
     MessageHandler(filters=filters.VOICE, callback=audio_reply),  # Регистрация обработчика аудио сообщений
     MessageHandler(filters=filters.VIDEO_NOTE, callback=video_note_reply),  # Регистрация обработчика видео сообщений

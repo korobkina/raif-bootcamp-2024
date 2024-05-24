@@ -2,8 +2,11 @@
 
 import base64
 import subprocess
+import random
 
 import cv2
+
+from wolf_assistant.settings import MEMES_DIR
 
 
 def frames_to_base64(video_file):
@@ -29,3 +32,9 @@ def convert_to_ogg(file_path):
     ogg_file = file_path.replace(".mov", ".ogg")
     subprocess.run(["ffmpeg", "-i", file_path, ogg_file])
     return ogg_file
+
+
+def meme_pic() -> bytes:
+    random_idx = random.randint(0, 10)
+    meme_pic = (MEMES_DIR / f"{random_idx}.jpeg").read_bytes()
+    return meme_pic
