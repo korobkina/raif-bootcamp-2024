@@ -35,6 +35,6 @@ def convert_to_ogg(file_path):
 
 
 def meme_pic() -> bytes:
-    random_idx = random.randint(0, 10)
+    random_idx = random.randint(0, 19)
     meme_pic = (MEMES_DIR / f"{random_idx}.jpeg").read_bytes()
     return meme_pic
