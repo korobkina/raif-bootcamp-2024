@@ -4,7 +4,7 @@
 
 # Raiffeisen bootcamp 2024 - Data Scientist assistant telegram bot
 
-**Bot**: - link \
+**Bot**: https://t.me/ds_wolf_bot
 **Service dashboard**: http://159.65.124.137:3000/d/edmo0ry0ykphca/ds-bootcamp-telegram-bot-team-3?orgId=1 
 
 
